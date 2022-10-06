@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.gradle.test.boot_gradle.question.QuestionRepository;
+import com.gradle.test.boot_gradle.question.QuestionService;
 import com.gradle.test.boot_gradle.vo.Question;
 
 @SpringBootTest
@@ -19,11 +20,10 @@ class BootGradleApplicationTests {
 	@Autowired
 	private QuestionRepository questionRepository;
 
-	@Test
-	void contextLoads() {
-	}
+	@Autowired
+	private QuestionService questionService;
 
-	@Test
+	// @Test
 	void testJpa() {
 		Question q1 = new Question();
 		q1.setSubject("Q1S");
@@ -38,7 +38,7 @@ class BootGradleApplicationTests {
 		this.questionRepository.save(q2);
 	}
 
-	@Test
+	// @Test
 	void testJpaRead() {
 		// findAll()
 		List<Question> all = this.questionRepository.findAll();
@@ -57,6 +57,15 @@ class BootGradleApplicationTests {
 		// findBySubject()
 		Question q2 = this.questionRepository.findBySubject("Q1S");
 		assertEquals(1, q2.getId());
+	}
+
+	@Test
+	void createTestData() {
+		for (int i = 1; i <= 300; i++) {
+			String subject = String.format("test data:[%03d]", i);
+			String content = "content";
+			this.questionService.create(subject, content);
+		}
 	}
 
 }
